@@ -6,6 +6,8 @@ import type { MediaSlot } from "@/content/media";
 // Blog articles. Each text lives verbatim in content/articles/{lang}/{slug}.md
 // and is rendered as written: edit the Markdown, never the components.
 //
+// Order: newest first; the Home gallery follows it.
+//
 // Routes: /{lang}/blog/{slug}. There is no /{lang}/blog archive yet; add it
 // (and the "Blog" entry in the primary navigation) once it is designed.
 //
@@ -15,9 +17,14 @@ import type { MediaSlot } from "@/content/media";
 // larger, product near the centre. Figures between sections are not used
 // yet; they would span the same wide column as the hero.
 
+/** Product categories. Labels live in content/editorial-home.ts. */
+export const categoryIds = ["smartphone", "audio", "wearable", "casa", "computer"] as const;
+export type CategoryId = (typeof categoryIds)[number];
+
 export type Article = {
   lang: Locale;
   slug: string;
+  category: CategoryId;
   /** Kicker above the headline, e.g. ["Blog", "Recensione"]. */
   kicker: string[];
   hero: MediaSlot & { alt: string; placeholder: string };
@@ -27,6 +34,7 @@ export const articles: Article[] = [
   {
     lang: "it",
     slug: "iphone-18-pro-il-telefono-che-ti-mente-in-faccia",
+    category: "smartphone",
     kicker: ["Blog", "Recensione"],
     hero: {
       src: null,

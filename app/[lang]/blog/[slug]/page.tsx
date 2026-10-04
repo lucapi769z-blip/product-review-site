@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { getDictionary } from "@/content";
+import { editorialHome } from "@/content/editorial-home";
 import { articlePath, articles, getArticle, readArticleSource } from "@/content/articles";
 import { isBuiltLocale } from "@/lib/i18n";
 import { parseMarkdown, plainText } from "@/lib/markdown";
@@ -42,13 +43,15 @@ export default async function ArticlePage({ params }: { params: Params }) {
 
   // No translation yet: the other language links to its Home.
   const paths = { [lang]: articlePath(article) };
+  // Italian: the same navigation as the editorial Home (anchors to /it).
+  const nav = lang === "it" ? { ...t, nav: editorialHome.nav, cta: editorialHome.cta } : t;
 
   return (
     <>
       <a href="#main" className="skip-link">
         {t.a11y.skipToContent}
       </a>
-      <SiteHeader lang={lang} t={t} paths={paths} />
+      <SiteHeader lang={lang} t={nav} paths={paths} />
       <main id="main" tabIndex={-1}>
         <Article article={article} source={readArticleSource(article)} />
       </main>
